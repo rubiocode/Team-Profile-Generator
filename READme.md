@@ -99,7 +99,7 @@ This is an example of what the team generated HTML page looks like in a regular 
 Here is a screenshot of the responsive layout of the HTML page. Have
 
 <p float="left">
-    <img src="./Assets/img/responsiveTeamHTML.png" alt="Inquirer Generated Team HTML page at smaller screen" style="height: 5% ; width:20%;"/>
+    <img src="./Assets/img/responsiveTeamHTML.png" alt="Inquirer Generated Team HTML page at smaller screen" style="height: 5% ; width:10%;"/>
 </p>
 
 
