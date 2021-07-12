@@ -161,7 +161,7 @@ function startHtml(employees){
                     <ul class="uk-list uk-list-none uk-text-right">
                         <li>ID: ${id} </li>
                         <li>Email: <a href="mailto: email"> ${email} </a></li>
-                        <li>GitHub: <a href="https://github.com/gitHubUsername" target="_blank" rel="noopener noreferrer"> ${gitHubUsername} </a></li>
+                        <li>GitHub: <a href="https://github.com/${gitHubUsername}" target="_blank" rel="noopener noreferrer"> ${gitHubUsername} </a></li>
                     </ul>
                 </div>
             </div>
