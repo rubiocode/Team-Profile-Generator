@@ -1,3 +1,4 @@
+
 const Manager = require("./lib/Manager");
 
 const Engineer = require("./lib/Engineer");
@@ -8,8 +9,12 @@ const inquirer = require('inquirer');
 
 const fs = require('fs');
 
+
+// setting up empty array to have all employee members added to the the HTML page
 const employees = [];
 
+
+// Setting up questions to be use in node, each question has validation to prevent no user entry
 const questions = [
     {
         type: 'input',
@@ -59,6 +64,8 @@ const questions = [
     }
 ]
 
+
+// Setting up function to start prompts and to switch roles and questions based on user selection
 function promptUser() {
     inquirer
         .prompt(questions)
@@ -92,16 +99,20 @@ function promptUser() {
                 message: 'Would you like to add another employee?'
             })
 
+            // Adding more team members if yes user will keep going through prompts
             .then(response => {
                 if(response.more){
                     promptUser();
                 } else {
+                    // if no more members to be added, the information entered will be added to HTML 
                     writeHtml();
                 }
             })
         })
 }
 
+
+// Function to start HTML file upon starting prompts in node
 function htmlInit(){
     const html=`<!DOCTYPE html>
     <html class="uk-background-muted">
@@ -132,6 +143,7 @@ function htmlInit(){
     console.log('HTML init');
 }
 
+// function to start adding the member selections
 function startHtml(employees){
     return new Promise(function(resolve, reject){
         const email = employees.getEmail();
@@ -228,6 +240,8 @@ function startHtml(employees){
     });
 }
 
+
+// function to write final part of html file and append the entire HTML file to the correct folder location
 function writeHtml(){
     const html = `</div>
     </div>
@@ -247,10 +261,12 @@ function writeHtml(){
     console.log("HTML done");
 }
 
+// function to initiate prompts and to start HTML file 
 function initApp(){
     htmlInit();
     promptUser();
 }
 
+// initialization of the app 
 initApp();
 
