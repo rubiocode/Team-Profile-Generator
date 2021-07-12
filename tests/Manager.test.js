@@ -1,5 +1,5 @@
 const { expect } = require("@jest/globals");
-const Manager = require("../lib/Manager");
+const Manager = require("../Develop/lib/Manager");
 
 test ("Creates office number using constructorfunction", () => {
     const officeNumber = 720;

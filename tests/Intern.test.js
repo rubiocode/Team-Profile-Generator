@@ -1,5 +1,5 @@
 const { expect } = require("@jest/globals");
-const Intern = require("../lib/Intern");
+const Intern = require("../Develop/lib/Intern");
 
 test ("Can set school using constructor function", () => {
     const school = "school";
