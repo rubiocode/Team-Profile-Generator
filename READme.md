@@ -26,7 +26,7 @@
 
 ## Description
 
-This command line application will prompt the user for information about their team and generate a nicely formatted and responsive HTML page displaying the roster of their team members. In addition, the user has the option to enter as many team members possible whether they are managers, engineers and/or interns. 
+This command line application will prompt the user for information about their team and generate a nicely formatted and responsive HTML page displaying a roster of all their team members with specific information based on their roles. In addition, the user has the option to enter as many team members possible whether they are managers, engineers and/or interns. 
 
 ### User Story
 
