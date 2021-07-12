@@ -8,7 +8,7 @@ const inquirer = require('inquirer');
 
 const fs = require('fs');
 
-const members = [];
+const employees = [];
 
 const questions = [
     {
@@ -56,42 +56,201 @@ const questions = [
         message: "What is the engineer's GitHub username?",
         when: (response) => response.role === 'Engineer',
         validate: githubInput => (githubInput ? true : "You MUST enter GitHub username")
-    },
+    }
 ]
 
-const promptUser = () => {
-    return inquirer
+function promptUser() {
+    inquirer
         .prompt(questions)
-};
+        .then(response => {
+            const name = response.name;
+            const id = response.id;
+            const email = response.email;
+            const role = response.role;
 
-const writeToFile = (response) => {
+            switch (role) {
+                case 'Manager':
+                    const manager = new Manager(name, id, email, response.officeNumber);
+                    employees.push(manager);
+                    startHtml(manager);
+                    break;
+                case 'Intern':
+                    const intern = new Intern(name, id, email, response.school);
+                    employees.push(intern);
+                    startHtml(intern);
+                    break;
+                case 'Engineer':
+                    const engineer = new Engineer(name, id, email, response.github);
+                    employees.push(engineer);
+                    startHtml(engineer);
+                    break;
+            }
 
-    const id= response.id;
-    const email= response.email;
-    const name= response.name;
-    const role = response.role;
+            inquirer.prompt({
+                type: 'confirm',
+                name: 'more',
+                message: 'Would you like to add another employee?'
+            })
 
-    switch (role) {
-        case 'Manager':
-            const manager= new Manager(name, id, email, response.officeNumber);
-            employees.push(manager);
-            break;
-        case 'Intern':
-            const intern= new Intern(name, id, email, response.school);
-            employees.push(intern);
-            break;
-        case 'Engineer':
-            const engineer= new Engineer(name, id, email, response.github);
-            employees.push(engineer);
-            break;
-    }
+            .then(response => {
+                if(response.more){
+                    promptUser();
+                } else {
+                    writeHtml();
+                }
+            })
+        })
+}
 
-};
+function htmlInit(){
+    const html=`<!DOCTYPE html>
+    <html class="uk-background-muted">
+    
+    <head>
+        <title>My Team</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- UIkit CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.7.0/dist/css/uikit.min.css">
+    
+        <!-- Fontawesome-->
+        <script src="https://kit.fontawesome.com/c502137733.js"></script>
+    </head>
+    
+    <body>
+        <h1 class="uk-heading-lead uk-heading-line uk-text-center uk-text-italic uk-text-warning uk-padding"><span>My Team</span></h1>
+        <div class="uk-container uk-margin">
+            <div class="uk-grid-column-medium uk-grid-row-large uk-child-width-1-3@s uk-text-center uk-flex-center uk-grid-match"
+                uk-grid uk-scrollspy="target: > div; cls: uk-animation-slide-bottom; delay: 250">`;
 
-const init = () => {
-    promptUser()
-    .then((response)=>writeToFile(response))
-    .then(() => console.log('Congratulations! You have successfully created your team profile.'))
-    .catch((err) => console.error(err));
-};
-init();
+    fs.writeFile("./output/team.html", html, function(err) {
+        if (err){
+            console.log(err);
+        }
+    });
+
+    console.log('HTML init');
+}
+
+function startHtml(employees){
+    return new Promise(function(resolve, reject){
+        const email = employees.getEmail();
+        const id = employees.getId();
+        const name = employees.getName();
+        const role = employees.getRole();
+
+        let data="";
+
+        if (role === "Engineer"){
+            const gitHubUsername = employees.getGitHub();
+
+            data = `<div>
+            <div class="uk-card uk-card-default">
+                <div class="uk-card-header">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-auto">
+                            <span class="uk-text-warning"><i class="fas fa-lg fa-glasses"></i></span>
+                        </div>
+                        <div class="uk-width-expand">
+                            <h3 class="uk-card-title uk-margin-remove-bottom"> ${name} </h3>
+                            <p class="uk-text-meta uk-margin-remove-top"> || Engineer || </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-card-body">
+                    <ul class="uk-list uk-list-none uk-text-right">
+                        <li>ID: ${id} </li>
+                        <li>Email: <a href="mailto: email"> ${email} </a></li>
+                        <li>GitHub: <a href="https://github.com/gitHubUsername" target="_blank" rel="noopener noreferrer"> ${gitHubUsername} </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>`
+        } else if (role === "Intern"){
+            const school = employees.getSchool();
+            data = `<div>
+            <div class="uk-card uk-card-default">
+                <div class="uk-card-header">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-auto">
+                            <span class="uk-text-warning"><i class="fas fa-lg fa-user-graduate"></i></span>
+                        </div>
+                        <div class="uk-width-expand">
+                            <h3 class="uk-card-title uk-margin-remove-bottom"> ${name} </h3>
+                            <p class="uk-text-meta uk-margin-remove-top">|| Intern ||</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-card-body">
+                    <ul class="uk-list uk-list-none uk-text-right">
+                        <li>ID: ${id} </li>
+                        <li>Email: <a href="mailto:email"> ${email} </a></li>
+                        <li>School: ${school} </li>
+                    </ul>
+                </div>
+            </div>
+        </div>`
+        } else {
+            const officeNumber = employees.getOfficeNumber();
+            data= `<div>
+            <div class="uk-card uk-card-default">
+                <div class="uk-card-header">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-auto">
+                            <span class="uk-text-warning"><i class="fas fa-lg fa-mug-hot"></i></span>
+                        </div>
+                        <div class="uk-width-expand">
+                            <h3 class="uk-card-title uk-margin-remove-bottom"> ${name} </h3>
+                            <p class="uk-text-meta uk-margin-remove-top">|| Manager ||</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-card-body">
+                    <ul class="uk-list uk-list-none uk-text-right">
+                        <li>ID: ${id} </li>
+                        <li>Email: <a href="mailto:email"> ${email} </a></li>
+                        <li>Office Number: ${officeNumber} </li>
+                    </ul>
+                </div>
+            </div>
+        </div>`
+        }
+
+        console.log("adding employee");
+
+        fs.appendFile("./output/team.html", data, function (err){
+            if (err){
+                return reject(err);
+            };
+
+            return resolve();
+        });
+    });
+}
+
+function writeHtml(){
+    const html = `</div>
+    </div>
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.0/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.0/dist/js/uikit-icons.min.js"></script>
+</body>
+
+</html>`;
+
+    fs.appendFile("./output/team.html", html, function (err){
+        if (err){
+            console.log(err);
+        };
+    });
+
+    console.log("HTML done");
+}
+
+function initApp(){
+    htmlInit();
+    promptUser();
+}
+
+initApp();
+
