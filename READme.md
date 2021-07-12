@@ -4,7 +4,7 @@
 
  URL of the GitHub repository: https://github.com/rubiocode/Team-Profile-Generator
 
- URL of sample team page created by the application:
+ URL of sample team page created by the application: https://rubiocode.github.io/Team-Profile-Generator/Develop/output/team.html
 
 </div>
 
@@ -15,6 +15,10 @@
     * [Acceptance Criteria](#acceptance-criteria)
 * [Installation](#installation)
 * [Usage](#usage)
+* [View](#view)
+    * [Inquirer Prompts](#inquirer-prompts)
+    * [Team Roster](#team-roster)
+    * [Responsive Layout](#responsive-layout)
 * [Tests](#tests)
 * [Built With](#built-with)
 * [Credits](#credits)
@@ -88,19 +92,16 @@ This is what the inquirer command-line prompts look like:
 
 <img src="./Assets/img/inquirerPrompts.gif" alt="Inquirer generated prompts" style="height: auto ; width: 40%;"/>
 
-### Team Roster (Reg Screen)
+### Team Roster 
 This is an example of what the team generated HTML page looks like in a regular sized screen.
 
-<p float="left">
-    <img src="./Assets/img/teamHTML.png" alt="Inquirer Generated Team HTML page regular screen size" style="height: auto ; width:40rem;"/>
-</p>
+<img src="./Assets/img/teamHTML.png" alt="Inquirer Generated Team HTML page regular screen size" style="height: auto ; width:40rem;"/>
 
-### Team Roster (Responsive Layout)
-Here is a screenshot of the responsive layout of the HTML page. Have
+### Responsive Layout
+Here is a screenshot of the responsive layout of the HTML page.
 
-<p float="left">
-    <img src="./Assets/img/responsiveTeamHTML.png" alt="Inquirer Generated Team HTML page at smaller screen" style="height: 5% ; width:10%;"/>
-</p>
+<img src="./Assets/img/responsiveTeamHTML.png" alt="Inquirer Generated Team HTML page at smaller screen" style="height: 5% ; width:10%;"/>
+
 
 
 ## Tests
